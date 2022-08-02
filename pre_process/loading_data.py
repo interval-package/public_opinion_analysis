@@ -15,5 +15,7 @@ def traverse_csv(tar_path=_csv_path, process_func=print):
             process_func(row)
 
 
+
+
 if __name__ == '__main__':
     traverse_csv()

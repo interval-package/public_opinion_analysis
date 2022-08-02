@@ -1,7 +1,10 @@
+import jieba
+
+
+# 初始化结巴库
 
 
 class str_cleaner():
-
     @staticmethod
     def to_raw_string(str1, has_num=False):
         """
@@ -15,3 +18,12 @@ class str_cleaner():
             res = re.sub('([^\u4e00-\u9fa5])', '', str1)
         return res
 
+    @staticmethod
+    def split_string(tar:string):
+        """
+        :cvar tar 目标串
+
+        使用结巴分词将目标串进行切割，返回一个列表
+        """
+
+        return
