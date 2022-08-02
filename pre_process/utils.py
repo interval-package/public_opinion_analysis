@@ -28,7 +28,7 @@ class str_cleaner:
             return None
         pos = tar.find(key_word)
         res = tar[pos + len(key_word):]
-        res.replace('编辑于赞同条评论分享收藏喜欢收起','')
+        res.replace('编辑于赞同条评论分享收藏喜欢收起', '')
         return res
 
     @staticmethod
@@ -42,3 +42,21 @@ class str_cleaner:
         seg_list = jieba.cut(tar)
 
         return seg_list
+
+    @staticmethod
+    def get_agree(agree_str: str) -> int:
+        res = 0
+        if agree_str in ['', '\n']:
+            return res
+        try:
+            res = int(agree_str)
+        except Exception as e:
+            pos = agree_str.find('\n')
+            if pos > -1:
+                temp = agree_str[(pos+2):]
+                pos = temp.find('万')
+                if pos > -1:
+                    res = int(float(temp[:pos]) * 1e4)
+                elif len(temp) > 0:
+                    res = int(temp)
+        return res
