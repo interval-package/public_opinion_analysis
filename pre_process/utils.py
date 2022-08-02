@@ -1,10 +1,14 @@
 import jieba
-
+import re
+import logging
 
 # 初始化结巴库
 
 
-class str_cleaner():
+feature_list = ["赞同了该回答", ]
+
+
+class str_cleaner:
     @staticmethod
     def to_raw_string(str1, has_num=False):
         """
@@ -19,11 +23,22 @@ class str_cleaner():
         return res
 
     @staticmethod
-    def split_string(tar:string):
+    def cut_useless_info(tar: str, key_word=feature_list[0]):
+        if '邀请回答' in tar:
+            return None
+        pos = tar.find(key_word)
+        res = tar[pos + len(key_word):]
+        res.replace('编辑于赞同条评论分享收藏喜欢收起','')
+        return res
+
+    @staticmethod
+    def split_string(tar: str):
         """
         :cvar tar 目标串
 
         使用结巴分词将目标串进行切割，返回一个列表
         """
 
-        return
+        seg_list = jieba.cut(tar)
+
+        return seg_list
