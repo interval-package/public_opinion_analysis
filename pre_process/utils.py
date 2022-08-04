@@ -32,16 +32,14 @@ class str_cleaner:
         return res
 
     @staticmethod
-    def split_string(tar: str):
+    def split_string(tar: str)->list:
         """
         :cvar tar 目标串
 
         使用结巴分词将目标串进行切割，返回一个列表
         """
-
         seg_list = jieba.cut(tar)
-
-        return seg_list
+        return list(seg_list)
 
     @staticmethod
     def get_agree(agree_str: str) -> int:

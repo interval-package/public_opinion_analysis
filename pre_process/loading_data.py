@@ -11,7 +11,6 @@ _csv_path_3c = "../data/outside_data/third_child.csv"
 
 def load_data(tar_path=_csv_path_jf):
     tb = pd.read_csv(tar_path)
-    print(tb, error_bad_lines=False)
 
 
 def traverse_csv(tar_path=_csv_path_jf, process_func=print):
@@ -27,8 +26,9 @@ def cleaned_str_list_get(row):
     return row
 
 
-def gather_info(row, res: list, has_ag=True) -> None:
+def gather_info(row, res: list, has_ag=False) -> None:
     ques = cleaned_str_list_get(row)
+
     if ques is not None:
         if len(ques) < 6:
             pass
@@ -36,12 +36,18 @@ def gather_info(row, res: list, has_ag=True) -> None:
             temp = []
             if has_ag:
                 temp.append(str_cleaner.get_agree(row[4]))
+
+            ques = str_cleaner.split_string(ques)
             temp.append(ques)
-            res.append(temp)
-    return
+            res.append(ques)
+    pass
+
+
+def get_dataset():
+    buffer = []
+    traverse_csv(_csv_path_3c, process_func=lambda row: gather_info(row, buffer))
+    return buffer
 
 
 if __name__ == '__main__':
-    buffer = []
-    traverse_csv(_csv_path_3c, process_func=lambda row: gather_info(row, buffer))
-    print(np.array(buffer)[:,1])
+    print(get_dataset())
