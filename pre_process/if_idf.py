@@ -65,7 +65,13 @@ def feature_select(list_words):
 
 
 if __name__ == '__main__':
-    data_list, label_list = loadDataSet()  # 加载数据
+    from loading_data import get_dataset_file
+    import pickle
+
+    data_list = get_dataset_file()
     features = feature_select(data_list)  # 所有词的TF-IDF值
+
+    pickle.dump(features, open("if_idf_for_word.pkl", "wb"))
+
     print(features)
     print(len(features))
