@@ -9,23 +9,11 @@ from sklearn.cluster import KMeans
 
 
 class FactorProcess:
-    tar_clo = "bz_item"
-    date_clo = "end_date"
-
-    split_words = []
-    split_words_time = []
-    tags = []
-    tags_time = []
-
-    insight_tab = {
-        "split_words": [],
-        "tags": [],
-    }
-
     encode_weight = None
 
     def __init__(self):
-        self.data = read_bz_main_total()
+        from loading_data import get_dataset
+        self.data = get_dataset()
         self.codes = self.data.keys()
 
     def process_factor_encode(self):
