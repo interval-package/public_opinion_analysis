@@ -31,16 +31,23 @@ class FactorProcess:
 
     def clustering(self, is_save=True):
         weight = self.vec
-        clf = KMeans(n_clusters=3)
+        clf = KMeans(n_clusters=20)
         res = clf.fit(weight)
         print("the center:")
         print(clf.cluster_centers_)
         return clf.labels_
 
+    def clustering_save_tags(self):
+        import pickle
+        pickle.dump(self.clustering(), open("loading_data/clustered_tags.pkl", 'wb'))
+
+    def normalize_vec(self):
+
+        return
+
 
 if __name__ == '__main__':
     obj = FactorProcess()
-    tar = obj.clustering()
-    import pickle
-    pickle.dump(tar,open("clustered_tags.pkl",'wb'))
+    print(obj.vec)
+    obj.clustering_save_tags()
     pass
