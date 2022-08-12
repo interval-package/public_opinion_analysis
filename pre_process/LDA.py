@@ -1,18 +1,13 @@
-import pyLDAvis.gensim_models
-
-'''插入之前的代码片段'''
 import codecs
+
+import pyLDAvis.gensim_models
 from gensim import corpora
 from gensim.models import LdaModel
 from gensim.corpora import Dictionary
 
-train = []
+from loading_data import get_dataset_file
 
-fp = codecs.open('感想分词.txt', 'r', encoding='utf8')
-for line in fp:
-    if line != '':
-        line = line.split()
-        train.append([w for w in line])
+train = get_dataset_file()
 
 dictionary = corpora.Dictionary(train)
 

@@ -4,13 +4,13 @@ import os
 import pandas as pd
 import numpy as np
 import csv
-from .utils import str_cleaner
+from utils import str_cleaner
 from os import path
 import pickle
 
-_csv_path_jf = "../../data/outside_data/jf_violence.csv"
+_csv_path_jf = "../data/outside_data/jf_violence.csv"
 
-_csv_path_3c = "../../data/outside_data/third_child.csv"
+_csv_path_3c = "../data/outside_data/third_child.csv"
 
 
 def load_data(tar_path=_csv_path_jf):
@@ -35,37 +35,43 @@ def gather_info_raw(row, res: list) -> None:
     pass
 
 
-def gather_info(row, res: list, has_ag=False) -> None:
+def gather_info(row, res: list, has_other=False) -> None:
     ques = cleaned_str_list_get(row)
     if ques is not None:
         if len(ques) < 6:
             pass
         else:
-            temp = []
-            user = row[2][0]
-            date = row[3][4:]
-            ag = str_cleaner.get_agree(row[4])
             ques = str_cleaner.split_string(ques)
-            temp.append(user)
-            temp.append(date)
-            temp.append(ag)
-            temp.append(ques)
-            res.append(temp)
+            if has_other:
+                temp = []
+                user = row[2][0]
+                date = row[3][4:]
+                ag = str_cleaner.get_agree(row[4])
+                temp.append(user)
+                temp.append(date)
+                temp.append(ag)
+                temp.append(ques)
+                res.append(temp)
+            else:
+                res.append(ques)
     pass
 
 
-def get_dataset(func=gather_info):
+def get_dataset(has_other=True, func=gather_info):
     buffer = []
     # generate new list
-    traverse_csv(_csv_path_3c, process_func=lambda row: func(row, buffer))
+    traverse_csv(_csv_path_3c, process_func=lambda row: func(row, buffer, has_other))
     return buffer
 
 
 def get_dataset_file(tar_file="cut_words.pkl") -> list:
-    if os.path.exists(os.path.join(tar_file)):
-        f1 = open(tar_file, 'rb')
+    tar = os.path.join("loading_data", tar_file)
+    if os.path.exists(tar):
+        f1 = open(tar, 'rb')
         obj = pickle.load(f1)
         return obj
+    else:
+        raise FileNotFoundError("error space")
 
 
 def save_data(tar: list, file_name="temp.pkl"):
@@ -75,12 +81,7 @@ def save_data(tar: list, file_name="temp.pkl"):
 
 
 if __name__ == '__main__':
-    # data = get_dataset()
-    # print(data)
-    #
-    # save_data(data, "processed_data.pkl")
-
-    res = get_dataset_file("processed_data.pkl")
-    for row in res:
-        print(row[-1])
+    data = get_dataset(True)
+    print(data)
+    save_data(data, "loading_data/processed_data.pkl")
     pass

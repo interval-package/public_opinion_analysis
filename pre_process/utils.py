@@ -1,3 +1,5 @@
+import os
+
 import jieba
 import re
 import logging
@@ -6,6 +8,19 @@ import logging
 
 
 feature_list = ["赞同了该回答", ]
+
+_stop_list = ["播放", "发布于", "播放", "赞同", "添加", "评论", "分享""收藏", "喜欢", "\n"]
+
+
+def load_stop_words():
+    f = open(os.path.join("loading_data", "cn_stopwords.txt"), "r", encoding="utf-8")
+    stopwords = [line.strip() for line in f]
+    for word in _stop_list:
+        stopwords.append(word)
+    return stopwords
+
+
+_stopwords = load_stop_words()
 
 
 class str_cleaner:
@@ -32,14 +47,19 @@ class str_cleaner:
         return res
 
     @staticmethod
-    def split_string(tar: str)->list:
+    def split_string(tar: str) -> list:
         """
         :cvar tar 目标串
 
+        同时启用停词
         使用结巴分词将目标串进行切割，返回一个列表
         """
         seg_list = jieba.cut(tar)
-        return list(seg_list)
+        res = []
+        for word in seg_list:
+            if word not in _stopwords and len(word) > 1:
+                res.append(word)
+        return res
 
     @staticmethod
     def get_agree(agree_str: str) -> int:
@@ -51,7 +71,7 @@ class str_cleaner:
         except Exception as e:
             pos = agree_str.find('\n')
             if pos > -1:
-                temp = agree_str[(pos+2):]
+                temp = agree_str[(pos + 2):]
                 pos = temp.find('万')
                 if pos > -1:
                     res = int(float(temp[:pos]) * 1e4)
