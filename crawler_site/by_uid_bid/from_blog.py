@@ -208,7 +208,7 @@ def run(ids):
     print('微博号为' + str(b) + '的评论数据文件、保存完毕')
 
 
-from_path = '../data/blog/res.xls'
+from_path = '../../data/blog/res.xls'
 
 if __name__ == '__main__':
     # 由于微博限制，只能爬取前五十页的
