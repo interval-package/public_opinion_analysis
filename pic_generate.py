@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from sql_reading import *
 
 
@@ -12,8 +14,19 @@ def draw_bar_tags_hist():
 
 
 def draw_time_series():
-    tab = method_read_by_tag()
-
+    _tab = [calc_tags_time_series(0)]
+    for tab in _tab:
+        plt.subplot(1, 2, 1)
+        plt.plot(tab["date"], tab["num"], 'b*-')
+        plt.xlabel("time")
+        plt.ylabel("number of comments")
+        plt.legend(["l1-number of comments"])
+        plt.subplot(1, 2, 2)
+        plt.plot(tab["date"], tab["ags"], 'r*-')
+        plt.xlabel("time")
+        plt.ylabel("number of likes")
+        plt.legend(["l2-number of likes"])
+        plt.show()
     pass
 
 

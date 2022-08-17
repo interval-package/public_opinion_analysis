@@ -3,6 +3,8 @@ import os
 
 import pandas as pd
 import numpy as np
+from datetime import datetime
+import time
 import matplotlib.pyplot as plt
 
 conn = sql.connect(os.path.join("data", "database.db"))
@@ -30,7 +32,15 @@ def calc_tags(is_save=False):
     return tab
 
 
+def calc_tags_time_series(tag=0):
+    query = "select date, count(*) as num, sum(ag) as ags from dateless where tag = {} group by date".format(str(tag))
+    tab = pd.read_sql_query(sql=query, con=conn)
+    tab["date"] = tab["date"].apply(lambda tar: datetime.strptime(tar, "%Y-%m"))
+    return tab
+
+
 if __name__ == '__main__':
-    tab = method_read_by_tag()
-    tab.to_sql("dateless", con=conn, index=False)
+    tab = calc_tags_time_series()
+    print(tab)
+    # tab.to_sql("dateless", con=conn, index=False)
     pass
