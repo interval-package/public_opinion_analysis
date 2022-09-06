@@ -1,6 +1,9 @@
 import os
 
-import jieba
+try:
+    import jieba
+except:
+    pass
 import re
 import logging
 

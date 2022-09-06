@@ -21,9 +21,6 @@ def method_read_by_tag(tag=None, time_simplify=True) -> pd.DataFrame:
     return _tab
 
 
-# def method_read_time_
-
-
 def calc_tags(is_save=False):
     query = "select tag, count(*) from res_no_detail group by tag order by tag"
     tab = pd.read_sql_query(sql=query, con=conn)
@@ -39,8 +36,16 @@ def calc_tags_time_series(tag=0):
     return tab
 
 
+def get_hot():
+    query = "select * from hot"
+    tab = pd.read_sql_query(sql=query, con=conn)
+    tab["date"] = tab["date"].apply(lambda tar: datetime.strptime(tar, "%Y-%m-%d"))
+    return tab
+
+
 if __name__ == '__main__':
-    tab = calc_tags_time_series()
+    tab = get_hot()
+    # tab = calc_tags_time_series()
     print(tab)
     # tab.to_sql("dateless", con=conn, index=False)
     pass

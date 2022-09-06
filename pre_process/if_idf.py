@@ -4,25 +4,6 @@ import math
 import operator
 
 """
-函数说明:创建数据样本
-Returns:
-    dataset - 实验样本切分的词条
-    classVec - 类别标签向量
-"""
-
-
-def loadDataSet():
-    dataset = [['my', 'dog', 'has', 'flea', 'problems', 'help', 'please'],  # 切分的词条
-               ['maybe', 'not', 'take', 'him', 'to', 'dog', 'park', 'stupid'],
-               ['my', 'dalmation', 'is', 'so', 'cute', 'I', 'love', 'him'],
-               ['stop', 'posting', 'stupid', 'worthless', 'garbage'],
-               ['mr', 'licks', 'ate', 'my', 'steak', 'how', 'to', 'stop', 'him'],
-               ['quit', 'buying', 'worthless', 'dog', 'food', 'stupid']]
-    classVec = [0, 1, 0, 1, 0, 1]  # 类别标签向量，1代表好，0代表不好
-    return dataset, classVec
-
-
-"""
 函数说明：特征选择TF-IDF算法
 Parameters:
      list_words:词列表
@@ -68,10 +49,12 @@ if __name__ == '__main__':
     from loading_data import get_dataset_file
     import pickle
 
-    data_list = get_dataset_file()
-    features = feature_select(data_list)  # 所有词的TF-IDF值
+    features = pickle.load(open("if_idf_for_word.pkl", "rb"))
 
-    pickle.dump(features, open("if_idf_for_word.pkl", "wb"))
+    # data_list = get_dataset_file()
+    # features = feature_select(data_list)  # 所有词的TF-IDF值
+
+    # pickle.dump(features, open("if_idf_for_word.pkl", "wb"))
 
     print(features)
     print(len(features))
